@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Diwali 🎆</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding-bottom: 80px;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #ff6700, #7a1e00 80%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    position: relative;
+  }
+
+  h1 {
+    font-size: clamp(2em, 6vw, 3.5em);
+    text-shadow: 0 0 20px #ffd700, 0 0 40px #ffae00;
+    animation: glow 2s ease-in-out infinite alternate;
+    margin: 0.2em 0;
+    z-index: 2;
+    position: relative;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffae00; }
+    to { text-shadow: 0 0 40px #ffae00, 0 0 80px #ff7300; }
+  }
+
+  /* Animated Rotating Wishes */
+  .wishes {
+    font-size: clamp(1.1em, 3vw, 1.5em);
+    max-width: 90%;
+    margin: 1em auto;
+    line-height: 1.6;
+    z-index: 2;
+    position: relative;
+    animation: textGlow 3s linear infinite alternate;
+    transition: opacity 1s ease-in-out;
+  }
+
+  @keyframes textGlow {
+    from { text-shadow: 0 0 5px #fff6a0, 0 0 10px #ffd700; }
+    to { text-shadow: 0 0 20px #ffae00, 0 0 40px #ffd700; }
+  }
+
+  /* Floating Diyas */
+  .diya {
+    position: absolute;
+    bottom: -50px;
+    font-size: 1.8em;
+    animation: floatUp linear infinite;
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-110vh) scale(0.8); opacity: 0; }
+  }
+
+  /* Footer Glow Effect */
+  footer {
+    position: fixed;
+    bottom: 15px;
+    text-align: center;
+    width: 100%;
+    color: #fff;
+    font-weight: bold;
+    font-size: clamp(0.8em, 2.5vw, 1em);
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px #ffd700, 0 0 20px #ffae00;
+    overflow: hidden;
+    white-space: nowrap;
+    z-index: 2;
+  }
+
+  footer span {
+    display: inline-block;
+    background: linear-gradient(90deg, #ffd700, #fff6a0, #ffd700);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+  }
+
+  @keyframes shine {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Fireworks Particles + Spark Trails */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 1;
+    box-shadow: 0 0 8px #fff;
+  }
+
+  @media (max-width: 768px) {
+    h1 { font-size: clamp(1.8em, 6vw, 3em); }
+    .wishes { font-size: clamp(1em, 3vw, 1.3em); }
+  }
+
+  @media (max-width: 480px) {
+    .wishes { font-size: clamp(0.9em, 3vw, 1.1em); }
+    footer { font-size: clamp(0.7em, 3vw, 0.9em); }
+  }
+</style>
+</head>
+<body>
+  <h1>🪔 Happy Diwali 🪔</h1>
+
+  <div class="wishes" id="wishes"></div>
+
+  <footer>Developed by <span>Deepak Patel</span></footer>
+
+  <script>
+    // Floating Diyas
+    const createDiya = () => {
+      const diya = document.createElement("div");
+      diya.classList.add("diya");
+      diya.textContent = "🪔";
+      diya.style.left = Math.random() * 100 + "vw";
+      diya.style.animationDuration = (8 + Math.random() * 5) + "s";
+      diya.style.fontSize = (1.5 + Math.random() * 1.5) + "em";
+      document.body.appendChild(diya);
+      setTimeout(() => diya.remove(), 12000);
+    };
+    setInterval(createDiya, 300);
+
+    // Fireworks Burst with Spark Trails
+    const createFirework = () => {
+      const numParticles = 20 + Math.floor(Math.random() * 30);
+      const originX = Math.random() * window.innerWidth;
+      const originY = Math.random() * window.innerHeight / 2;
+
+      for (let i = 0; i < numParticles; i++) {
+        const particle = document.createElement("div");
+        particle.classList.add("particle");
+        const size = Math.random() * 6 + 4;
+        particle.style.width = size + "px";
+        particle.style.height = size + "px";
+        particle.style.background = `hsl(${Math.random()*360}, 100%, 60%)`;
+        particle.style.left = originX + "px";
+        particle.style.top = originY + "px";
+        document.body.appendChild(particle);
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 100 + 50;
+        const duration = 1200 + Math.random() * 500;
+        const start = performance.now();
+
+        const animate = (time) => {
+          let progress = (time - start) / duration;
+          if (progress < 1) {
+            particle.style.transform = `translate(${Math.cos(angle)*distance*progress}px, ${Math.sin(angle)*distance*progress}px) scale(${1-progress})`;
+            particle.style.opacity = 1 - progress;
+            particle.style.boxShadow = `0 0 ${8 + 12*progress}px hsl(${Math.random()*360}, 100%, 70%)`;
+            requestAnimationFrame(animate);
+          } else {
+            particle.remove();
+          }
+        };
+        requestAnimationFrame(animate);
+      }
+    };
+    setInterval(createFirework, 600);
+
+    // Rotating Festive Wishes
+    const messages = [
+      "🪔 Light up your life with joy, love, and prosperity! ✨",
+      "🎆 Let the fireworks of happiness brighten every corner of your life! 🎇",
+      "💰 May Goddess Lakshmi bless you with wealth and success! 🪔",
+      "🎉 Celebrate this Diwali with smiles, sweets, and sparkle! 🍬",
+      "🌟 Shine like a diya and sparkle like fireworks! ✨",
+      "❤️ Wishing you a Diwali full of warmth, love, and togetherness!"
+    ];
+
+    let index = 0;
+    const wishesDiv = document.getElementById("wishes");
+
+    function showNextMessage() {
+      wishesDiv.style.opacity = 0; // fade out
+      setTimeout(() => {
+        wishesDiv.textContent = messages[index];
+        wishesDiv.style.opacity = 1; // fade in
+        index = (index + 1) % messages.length;
+      }, 500);
+    }
+
+    showNextMessage(); // initial message
+    setInterval(showNextMessage, 4000); // change every 4 seconds
+
+    // Background Music
+    const music = new Audio("https://cdn.pixabay.com/download/audio/2023/07/13/audio_2b4a0f5955.mp3?filename=indian-festival-celebration-155204.mp3");
+    music.loop = true;
+    music.volume = 0.3;
+    document.addEventListener("click", () => { music.play().catch(()=>{}); });
+  </script>
+</body>
+</html>
